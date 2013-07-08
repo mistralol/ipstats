@@ -29,6 +29,7 @@ class Hosts :
 		bool GetStats(const std::string Address, struct HostStats *);
 		bool GetStats(unsigned int idx, struct HostStats *);
 		void GetTotals(uint64_t *TotalPackets, uint64_t *TotalBytes);
+		void GetTotalSpeed(float *PacketsPerSecond, float *BytesPerSecond);
 
 		void UpdateSrc(const std::string Address, uint64_t Bytes);
 		void UpdateDest(const std::string Address, uint64_t Bytes);
@@ -48,6 +49,11 @@ class Hosts :
 		std::vector<struct HostStats *> m_vhosts;
 		uint64_t m_TotalPackets;
 		uint64_t m_TotalBytes;
+		float m_PacketsPerSecond;
+		float m_BytesPerSecond;
+		struct timeval m_LastPerSecond;
+		uint64_t m_OldTotalPackets;
+		uint64_t m_OldTotalBytes;
 };
 
 

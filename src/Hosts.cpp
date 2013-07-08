@@ -5,6 +5,13 @@ Hosts::Hosts()
 {
 	m_TotalPackets = 0;
 	m_TotalBytes = 0;
+
+	m_PacketsPerSecond = 0;
+	m_BytesPerSecond = 0;
+
+	gettimeofday(&m_LastPerSecond, NULL);
+	m_OldTotalPackets = 0;
+	m_OldTotalBytes = 0;
 }
 
 Hosts::~Hosts()
@@ -107,6 +114,34 @@ void Hosts::GetTotals(uint64_t *TotalPackets, uint64_t *TotalBytes)
 {
 	*TotalPackets = m_TotalPackets;
 	*TotalBytes = m_TotalBytes;
+}
+
+void Hosts::GetTotalSpeed(float *PacketsPerSecond, float *BytesPerSecond)
+{
+	struct timeval tv;
+	*PacketsPerSecond = 0.0f;
+	*BytesPerSecond = 0.0f;
+
+	gettimeofday(&tv, NULL);
+
+	float ms = TimeUtil::TvDiffMs(tv, m_LastPerSecond);
+	
+	if (ms > 5000)
+	{
+		uint64_t PacketDiff = m_TotalPackets - m_OldTotalPackets;
+		uint64_t BytesDiff = m_TotalBytes - m_OldTotalBytes;
+
+		m_PacketsPerSecond = (PacketDiff / ms) * 1000;
+		m_BytesPerSecond = (BytesDiff / ms) * 1000;
+
+		m_OldTotalPackets = m_TotalPackets;
+		m_OldTotalBytes = m_TotalBytes;
+
+		memcpy(&m_LastPerSecond, &tv, sizeof(tv));
+	}
+
+	*PacketsPerSecond = m_PacketsPerSecond;
+	*BytesPerSecond = m_BytesPerSecond;
 }
 
 void Hosts::UpdateSrc(const std::string Address, uint64_t Bytes)

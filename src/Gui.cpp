@@ -158,14 +158,18 @@ void Gui::MainLoop(PCap &Capture, Hosts &HostInfo)
 
 			if (i + StartIdx == SelectedHost)
 				wattroff(m_screen, A_STANDOUT);
-
 		}
 
 		uint64_t TotalPackets = 0;
 		uint64_t TotalBytes = 0;
+		float TotalPacketsPerSecond = 0.0f;
+		float TotalBytesPerSecond = 0.0f;
 		HostInfo.GetTotals(&TotalPackets, &TotalBytes);
+		HostInfo.GetTotalSpeed(&TotalPacketsPerSecond, &TotalBytesPerSecond);
 
-		mvwprintw(m_screen, maxy - 1, 1, "Total Packets: %s Bytes: %s", PacketsToHuman(TotalPackets).c_str(), BytesToHuman(TotalBytes).c_str());
+		mvwprintw(m_screen, maxy - 1, 1, "Total Packets: %s Bytes: %s  Packets Per Second: %.2f Bytes Per Second: %.2f",
+				PacketsToHuman(TotalPackets).c_str(), BytesToHuman(TotalBytes).c_str(),
+				TotalPacketsPerSecond, TotalBytesPerSecond);
 		wrefresh(m_screen);
 
 		if (WaitInput())

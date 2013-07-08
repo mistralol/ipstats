@@ -2,7 +2,7 @@
 
 EXE=../ipstats
 
-SRCS= PCap.cpp Exception.cpp Hosts.cpp Gui.cpp Version.cpp main.cpp
+SRCS= PCap.cpp Exception.cpp TimeUtil.cpp Hosts.cpp Gui.cpp Version.cpp main.cpp
 
 OBJS=$(SRCS:%.cpp=%.o)
 MKDEP=gcc -E -MM
