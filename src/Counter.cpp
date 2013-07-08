@@ -2,6 +2,7 @@
 
 #include "host-stats.h"
 
+#include <syslog.h>
 
 Counter::Counter()
 {
@@ -39,18 +40,28 @@ void Counter::GetTotals(uint64_t *TotalPackets, uint64_t *TotalBytes)
 	*TotalBytes = m_TotalBytes;
 }
 
-void Counter::GetTotalSpeed(float *PacketsPerSecond, float *BytesPerSecond)
+uint64_t Counter::GetTotalPackets()
+{
+	return m_TotalPackets;
+}
+
+uint64_t Counter::GetTotalBytes()
+{
+	return m_TotalBytes;
+}
+
+void Counter::GetSpeeds(double *PacketsPerSecond, double *BytesPerSecond)
 {
 	struct timeval tv;
-	*PacketsPerSecond = 0.0f;
-	*BytesPerSecond = 0.0f;
 
 	if (gettimeofday(&tv, NULL) < 0)
 		abort();
 
-	float ms = TimeUtil::TvDiffMs(tv, m_LastSpeeds);
-	
-	if (ms > 5000)
+	double ms = TimeUtil::TvDiffMs(tv, m_LastSpeeds);
+
+	syslog(LOG_INFO, "%f", (float) ms);
+
+	if (ms > 2000)
 	{
 		uint64_t PacketDiff = m_TotalPackets - m_OldTotalPackets;
 		uint64_t BytesDiff = m_TotalBytes - m_OldTotalBytes;
@@ -66,5 +77,19 @@ void Counter::GetTotalSpeed(float *PacketsPerSecond, float *BytesPerSecond)
 
 	*PacketsPerSecond = m_PacketSpeed;
 	*BytesPerSecond = m_BytesSpeed;
+}
+
+double Counter::GetPacketSpeed()
+{
+	double PPS, BPS;
+	GetSpeeds(&PPS, &BPS);
+	return PPS;
+}
+
+double Counter::GetBytesSpeed()
+{
+	double PPS, BPS;
+	GetSpeeds(&PPS, &BPS);
+	return BPS;
 }
 

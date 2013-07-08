@@ -117,7 +117,7 @@ void Gui::MainLoop(PCap &Capture, Hosts &HostInfo)
 	{
 		int maxy, maxx;
 		int rxcol = 20;
-		int txcol = 50;
+		int txcol = 70;
 		getmaxyx(m_screen, maxy, maxx);
 
 		werase(m_screen);
@@ -125,8 +125,8 @@ void Gui::MainLoop(PCap &Capture, Hosts &HostInfo)
 
 		int nHosts = HostInfo.GetCount();
 		mvwprintw(m_screen, 0, 1, "Hosts (%d/%d)", SelectedHost + 1, nHosts);
-		mvwprintw(m_screen, 0, rxcol, "RX Packets  RX Bytes");
-		mvwprintw(m_screen, 0, txcol, "TX Packets  TX Bytes");
+		mvwprintw(m_screen, 0, rxcol, "RX Packets ------------ RX Bytes");
+		mvwprintw(m_screen, 0, txcol, "TX Packets ------------ TX Bytes");
 
 		struct HostStats HostData;
 
@@ -150,11 +150,11 @@ void Gui::MainLoop(PCap &Capture, Hosts &HostInfo)
 				wattron(m_screen, A_STANDOUT);
 
 			mvwprintw(m_screen, i + 1, 1, "%s", HostData.Addr->c_str());
-			mvwprintw(m_screen, i + 1, rxcol, "%.10s", PacketsToHuman(HostData.DestPackets).c_str());
-			mvwprintw(m_screen, i + 1, rxcol + 12, "%.15s", BytesToHuman(HostData.DestBytes).c_str());
+			mvwprintw(m_screen, i + 1, rxcol, "%.10s (%0.2f/sec)", PacketsToHuman(HostData.Dest->GetTotalPackets()).c_str(), HostData.Dest->GetPacketSpeed());
+			mvwprintw(m_screen, i + 1, rxcol + 24, "%.15s (%0.2f/sec)", BytesToHuman(HostData.Dest->GetTotalBytes()).c_str(), HostData.Dest->GetBytesSpeed());
 
-			mvwprintw(m_screen, i + 1, txcol, "%.10s", PacketsToHuman(HostData.SourcePackets).c_str());
-			mvwprintw(m_screen, i + 1, txcol + 12, "%.15s", BytesToHuman(HostData.SourceBytes).c_str());
+			mvwprintw(m_screen, i + 1, txcol, "%.10s (%0.2f/sec)", PacketsToHuman(HostData.Source->GetTotalPackets()).c_str(), HostData.Source->GetPacketSpeed());
+			mvwprintw(m_screen, i + 1, txcol + 24, "%.15s (%0.2f/sec)", BytesToHuman(HostData.Source->GetTotalBytes()).c_str(), HostData.Source->GetBytesSpeed());
 
 			if (i + StartIdx == SelectedHost)
 				wattroff(m_screen, A_STANDOUT);
@@ -162,8 +162,8 @@ void Gui::MainLoop(PCap &Capture, Hosts &HostInfo)
 
 		uint64_t TotalPackets = 0;
 		uint64_t TotalBytes = 0;
-		float TotalPacketsPerSecond = 0.0f;
-		float TotalBytesPerSecond = 0.0f;
+		double TotalPacketsPerSecond = 0.0;
+		double TotalBytesPerSecond = 0.0;
 		HostInfo.GetTotals(&TotalPackets, &TotalBytes);
 		HostInfo.GetTotalSpeed(&TotalPacketsPerSecond, &TotalBytesPerSecond);
 

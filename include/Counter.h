@@ -9,7 +9,13 @@ class Counter
 		void Reset();
 		void Add(const uint64_t Packets, uint64_t Bytes);
 		void GetTotals(uint64_t *TotalPackets, uint64_t *TotalBytes);
-		void GetTotalSpeed(float *PacketsPerSecond, float *BytesPerSecond);
+		uint64_t GetTotalPackets();
+		uint64_t GetTotalBytes();
+
+		void GetSpeeds(double *PacketsPerSecond, double *BytesPerSecond);
+		double GetPacketSpeed();
+		double GetBytesSpeed();
+
 
 	private:
 		uint64_t m_TotalPackets;

@@ -106,9 +106,9 @@ void Hosts::GetTotals(uint64_t *TotalPackets, uint64_t *TotalBytes)
 	Totals.GetTotals(TotalPackets, TotalBytes);
 }
 
-void Hosts::GetTotalSpeed(float *PacketsPerSecond, float *BytesPerSecond)
+void Hosts::GetTotalSpeed(double *PacketsPerSecond, double *BytesPerSecond)
 {
-	Totals.GetTotalSpeed(PacketsPerSecond, BytesPerSecond);
+	Totals.GetSpeeds(PacketsPerSecond, BytesPerSecond);
 }
 
 void Hosts::UpdateSrc(const std::string Address, uint64_t Bytes)
@@ -123,11 +123,7 @@ void Hosts::UpdateSrc(const std::string Address, uint64_t Bytes)
 	}
 
 	struct HostStats *Stats = it->second;
-	Stats->SourcePackets++;
-	Stats->SourceBytes += Bytes;
-	if (gettimeofday(&Stats->LastUpdate, NULL) < 0)
-		abort();
-
+	Stats->Source->Add(1, Bytes);
 }
 
 void Hosts::UpdateDest(const std::string Address, uint64_t Bytes)
@@ -142,8 +138,7 @@ void Hosts::UpdateDest(const std::string Address, uint64_t Bytes)
 	}
 
 	struct HostStats *Stats = it->second;
-	Stats->DestPackets++;
-	Stats->DestBytes += Bytes;
+	Stats->Dest->Add(1, Bytes);
 }
 
 void Hosts::HostAdd(const std::string Address)
@@ -157,6 +152,8 @@ void Hosts::HostAdd(const std::string Address)
 			throw(Exception("Malloc Failed"));
 
 		Stats->Addr = new std::string(Address);
+		Stats->Source = new Counter();
+		Stats->Dest = new Counter();
 		ZeroHost(Stats);
 		m_hosts[Address] = Stats;
 		m_vhosts.push_back(Stats);
@@ -176,6 +173,8 @@ void Hosts::Clear()
 	{
 		struct HostStats *Stats = it->second;
 		delete Stats->Addr;
+		delete Stats->Source;
+		delete Stats->Dest;
 		free(Stats);
 	}
 	m_hosts.clear();
@@ -219,18 +218,8 @@ void Hosts::ResetHost(const std::string Address)
 
 void Hosts::ZeroHost(struct HostStats *Stats)
 {
-	Stats->SourcePackets = 0;
-	Stats->SourceBytes = 0;
-	Stats->DestPackets = 0;
-	Stats->DestBytes = 0;
-
-	Stats->OldSourcePackets = 0;
-	Stats->OldSourceBytes = 0;
-	Stats->OldDestPackets = 0;
-	Stats->OldDestBytes = 0;
-
-	memset(&Stats->LastUpdate, 0, sizeof(Stats->LastUpdate));
-	memset(&Stats->LastStatsUpdate, 0, sizeof(Stats->LastStatsUpdate));
+	Stats->Dest->Reset();
+	Stats->Source->Reset();
 }
 
 

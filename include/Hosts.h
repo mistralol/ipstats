@@ -2,18 +2,8 @@
 struct HostStats
 {
 	std::string *Addr;
-	uint64_t SourcePackets;
-	uint64_t SourceBytes;
-	uint64_t DestPackets;
-	uint64_t DestBytes;
-
-	uint64_t OldSourcePackets;
-	uint64_t OldSourceBytes;
-	uint64_t OldDestPackets;
-	uint64_t OldDestBytes;
-
-	struct timeval LastUpdate;
-	struct timeval LastStatsUpdate;
+	Counter *Source;
+	Counter *Dest;
 };
 
 class Hosts :
@@ -29,7 +19,7 @@ class Hosts :
 		bool GetStats(const std::string Address, struct HostStats *);
 		bool GetStats(unsigned int idx, struct HostStats *);
 		void GetTotals(uint64_t *TotalPackets, uint64_t *TotalBytes);
-		void GetTotalSpeed(float *PacketsPerSecond, float *BytesPerSecond);
+		void GetTotalSpeed(double *PacketsPerSecond, double *BytesPerSecond);
 
 		void UpdateSrc(const std::string Address, uint64_t Bytes);
 		void UpdateDest(const std::string Address, uint64_t Bytes);
