@@ -1,6 +1,6 @@
 
 
-EXE=ipstats
+EXE=../ipstats
 
 SRCS= PCap.cpp Exception.cpp Hosts.cpp Gui.cpp Version.cpp main.cpp
 
@@ -17,7 +17,7 @@ all: .depend $(EXE)
 	$(CPP) $(OPTS) $(INCLUDE) -o $@ -c $<
 
 $(EXE): $(OBJS)
-	$(CPP) $(OBJS) $(LIBS) -o ipstats
+	$(CPP) $(OBJS) $(LIBS) -o $(EXE)
 
 dep: .depend
 
