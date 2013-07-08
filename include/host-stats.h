@@ -30,8 +30,9 @@
 #include <netinet/in.h>
 
 #include "Version.h"
-#include "TimeUtil.h"
 #include "Exception.h"
+#include "TimeUtil.h"
+#include "Counter.h"
 #include "IPCapHandler.h"
 #include "Hosts.h"
 #include "PCap.h"

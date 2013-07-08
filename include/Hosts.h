@@ -47,13 +47,7 @@ class Hosts :
 		boost::recursive_mutex m_mutex;
 		std::map<std::string, struct HostStats *> m_hosts;
 		std::vector<struct HostStats *> m_vhosts;
-		uint64_t m_TotalPackets;
-		uint64_t m_TotalBytes;
-		float m_PacketsPerSecond;
-		float m_BytesPerSecond;
-		struct timeval m_LastPerSecond;
-		uint64_t m_OldTotalPackets;
-		uint64_t m_OldTotalBytes;
+		Counter Totals;
 };
 
 
