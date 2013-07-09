@@ -101,6 +101,25 @@ bool Hosts::GetStats(unsigned int idx, struct HostStats *Stats)
 	return true;
 }
 
+int Hosts::GetAddressIdx(const std::string &Addr)
+{
+	return GetAddressIdx(Addr, 0);
+}
+
+int Hosts::GetAddressIdx(const std::string &Addr, int StartIdx)
+{
+	int idx = StartIdx;
+	boost::recursive_mutex::scoped_lock lock(m_mutex);
+	for(size_t i = StartIdx; i < m_vhosts.size(); i++, idx++)
+	{
+		struct HostStats *p = m_vhosts[i];
+		if (*(p->Addr) == Addr)
+			return idx;
+	}
+
+	return 0; /* Not Found */
+}
+
 void Hosts::GetTotals(uint64_t *TotalPackets, uint64_t *TotalBytes)
 {
 	Totals.GetTotals(TotalPackets, TotalBytes);

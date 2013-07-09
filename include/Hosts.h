@@ -18,6 +18,8 @@ class Hosts :
 		int GetCount();
 		bool GetStats(const std::string Address, struct HostStats *);
 		bool GetStats(unsigned int idx, struct HostStats *);
+		int GetAddressIdx(const std::string &Addr);
+		int GetAddressIdx(const std::string &Addr, int StartIdx);
 		void GetTotals(uint64_t *TotalPackets, uint64_t *TotalBytes);
 		void GetTotalSpeed(double *PacketsPerSecond, double *BytesPerSecond);
 
@@ -27,7 +29,6 @@ class Hosts :
 		void Clear();
 		void ClearHost(const std::string Address);
 		void ResetHost(const std::string Address);
-
 
 	private:
 		void HostAdd(const std::string Address);

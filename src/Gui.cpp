@@ -105,6 +105,8 @@ void Gui::ShowMainHelp(WINDOW *parent)
 void Gui::MainLoop(PCap &Capture, Hosts &HostInfo)
 {
 	bool Running = true;
+	std::string LastSelectedAddress;
+	bool SelectedHostChanged = false;
 	int SelectedHost = 0;
 	m_screen = initscr();
 	
@@ -132,6 +134,16 @@ void Gui::MainLoop(PCap &Capture, Hosts &HostInfo)
 
 		int StartIdx = 0;
 
+		//Ajust Selected host if items were added above it
+		if (SelectedHostChanged == false)
+		{
+			SelectedHost = HostInfo.GetAddressIdx(LastSelectedAddress);
+		}
+		else
+		{
+			SelectedHostChanged = false;
+		}
+
 		if (SelectedHost + 3 > maxy)
 			StartIdx = SelectedHost + 3 - maxy;
 
@@ -147,7 +159,10 @@ void Gui::MainLoop(PCap &Capture, Hosts &HostInfo)
 				break;
 
 			if (i + StartIdx == SelectedHost)
+			{
 				wattron(m_screen, A_STANDOUT);
+				LastSelectedAddress = *HostData.Addr;	/* Take a copy of this so we can find it on the next pass */
+			}
 
 			mvwprintw(m_screen, i + 1, 1, "%s", HostData.Addr->c_str());
 			mvwprintw(m_screen, i + 1, rxcol, "%.10s (%0.2f/sec)", PacketsToHuman(HostData.Dest->GetTotalPackets()).c_str(), HostData.Dest->GetPacketSpeed());
@@ -210,6 +225,8 @@ void Gui::MainLoop(PCap &Capture, Hosts &HostInfo)
 					nHosts = HostInfo.GetCount();
 					if (SelectedHost >= nHosts - 1)
 						SelectedHost = nHosts - 1;
+
+					SelectedHostChanged = true;
 					break;
 
 				case 'r': /* Reset Selected Host */
@@ -223,6 +240,7 @@ void Gui::MainLoop(PCap &Capture, Hosts &HostInfo)
 				case 's': /* Change Sorting Type */
 				case 'S':
 					abort(); /* Not Done Yet */
+					SelectedHostChanged = true;
 					break;
 				case 'v': /* Version */
 				case 'V':
@@ -252,26 +270,32 @@ void Gui::MainLoop(PCap &Capture, Hosts &HostInfo)
 				case KEY_DOWN: /* Down */
 					if (SelectedHost < nHosts - 1)
 						SelectedHost++;
+					SelectedHostChanged = true;
 					break;
 				case KEY_UP: /* Up */
 					if (SelectedHost > 0)
 						SelectedHost--;
+					SelectedHostChanged = true;
 					break;
 				case KEY_NPAGE: /* Page Down */
 					SelectedHost += 15;
 					if (SelectedHost > nHosts - 1)
 						SelectedHost = nHosts - 1;
+					SelectedHostChanged = true;
 					break;
 				case KEY_PPAGE: /* Page Up */
 					SelectedHost -= 15;
 					if (SelectedHost < 0)
 						SelectedHost = 0;
+					SelectedHostChanged = true;
 					break;
 				case KEY_HOME: /* Home / Jump to Start */
 					SelectedHost = 0;
+					SelectedHostChanged = true;
 					break;
 				case KEY_END: /* End / Jump To End */
 					SelectedHost = nHosts - 1;
+					SelectedHostChanged = true;
 					break;
 				default:
 					box(m_screen, 0, 0);
