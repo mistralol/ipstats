@@ -220,6 +220,10 @@ void Gui::MainLoop(PCap &Capture, Hosts &HostInfo)
 						break;
 					HostInfo.ResetHost(*HostData.Addr);
 					break;
+				case 's': /* Change Sorting Type */
+				case 'S':
+					abort(); /* Not Done Yet */
+					break;
 				case 'v': /* Version */
 				case 'V':
 					ShowVersion(m_screen);
