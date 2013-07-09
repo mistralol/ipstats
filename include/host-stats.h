@@ -32,6 +32,7 @@
 #include "Version.h"
 #include "Exception.h"
 #include "TimeUtil.h"
+#include "Config.h"
 #include "Counter.h"
 #include "IPCapHandler.h"
 #include "Hosts.h"
