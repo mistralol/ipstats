@@ -185,8 +185,6 @@ void Gui::MainLoop(PCap &Capture, Hosts &HostInfo)
 				case 'H':
 					ShowMainHelp(m_screen);
 					break;
-				//r - reset stats for host
-				//d - delete selected host
 				//s - Change host sorting type (Host / RX / TX / Total)
 				case 'a': /* About */
 				case 'A':
@@ -222,7 +220,6 @@ void Gui::MainLoop(PCap &Capture, Hosts &HostInfo)
 						break;
 					HostInfo.ResetHost(*HostData.Addr);
 					break;
-
 				case 'v': /* Version */
 				case 'V':
 					ShowVersion(m_screen);
@@ -232,7 +229,22 @@ void Gui::MainLoop(PCap &Capture, Hosts &HostInfo)
 				case 'Q':
 					Running = false;
 					break;
-
+				case 'w': /* Write Config File */
+				case 'W':
+					do {
+						std::string ErrMsg;
+						if (Config::WriteConfig(ErrMsg) == false)
+						{
+							mvwprintw(m_screen, maxy - 1, 2, "Error Writting Config File %s", ErrMsg.c_str());
+						}
+						else
+						{
+							mvwprintw(m_screen, maxy - 1, 2, "Config File Written");
+						}
+						wrefresh(m_screen);
+						Delay();
+					} while(0);
+					break;
 				case KEY_DOWN: /* Down */
 					if (SelectedHost < nHosts - 1)
 						SelectedHost++;
