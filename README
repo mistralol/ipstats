@@ -2,3 +2,16 @@ ipstats
 =======
 
 Collects ip stats from passing traffic
+
+
+Required Software to compile
+
+* Linux
+* C++ Compiler
+* libpcap
+* libncurses
+* boost_threads
+
+
+
+
