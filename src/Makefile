@@ -9,7 +9,7 @@ MKDEP=gcc -E -MM
 OPTS=-Wall -Werror -D_GNU_SOURCE -std=gnu++0x -ggdb
 CPP=g++
 INCLUDE=-I../include/
-LIBS=-lpcap -lboost_thread -lncurses
+LIBS=-lpcap -lboost_thread -lboost_system -lncurses -lpthread
 
 all: .depend $(EXE)
 
