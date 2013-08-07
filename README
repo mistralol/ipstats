@@ -1,13 +1,18 @@
 ipstats
 =======
 
-Collects ip stats from passing traffic
+Collects ip stats from passing traffic on an interface
 
+Supports
+
+* Totals and speeds for RX / TX from different hosts
+* Reset all or reset individual hosts
+* easy to use ncurses interface
 
 Required Software to compile
 
 * Linux
-* C++ Compiler
+* C++ Compiler (gcc)
 * libpcap
 * libncurses
 * boost_threads
