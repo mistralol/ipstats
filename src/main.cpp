@@ -49,6 +49,10 @@ int main(int argc, char **argv)
 		Capture.Stop();
 		Capture.HandlerRemove((IPCapHandler *) &HostStats);
 	}
+	catch(Exception ex)
+	{
+		std::cout << "Exception: " << ex.what() << std::endl;
+	}
 	catch(std::exception ex)
 	{
 		std::cout << "Exception: " << ex.what() << std::endl;
