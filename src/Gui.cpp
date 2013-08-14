@@ -32,11 +32,41 @@ Gui::~Gui()
 
 }
 
+void Gui::ShowAbout(WINDOW *parent)
+{
+	int pWidth, pHeight;
+	getmaxyx(m_screen, pHeight, pWidth);
+	int nLines = 7;
+	int nCols = 50;
+	int LocX = (pWidth / 2) - (nCols / 2);
+	int LocY = (pHeight / 2) - (nLines / 2);
+	WINDOW *window = newwin(nLines, nCols, LocY, LocX);
+	//int maxy, maxx;
+	//getmaxyx(m_screen, maxy, maxx);
+
+	werase(window);
+
+	box(window, 0, 0);
+
+	int cLine = 0;
+	mvwprintw(window, cLine++, 1, "About");
+
+	mvwprintw(window, cLine++, 1, " Author: James Stevenson");
+	mvwprintw(window, cLine++, 1, " E-Mail: james@stev.org");
+	mvwprintw(window, cLine++, 1, "WebSite: http://www.stev.org/");
+	mvwprintw(window, cLine++, 1, " Source: https://github.com/mistralol/ipstats");
+	mvwprintw(window, cLine++, 1, "Version: %s", Version::GetVersion().c_str());
+
+	wrefresh(window);
+
+	WaitForAnyKey();
+	delwin(window);
+}
+
 void Gui::ShowVersion(WINDOW *parent)
 {
 	int pWidth, pHeight;
 	getmaxyx(m_screen, pHeight, pWidth);
-	bool Loop = true;
 	int nLines = 3;
 	int nCols = 20;
 	int LocX = (pWidth / 2) - (nCols / 2);
@@ -45,31 +75,16 @@ void Gui::ShowVersion(WINDOW *parent)
 	//int maxy, maxx;
 	//getmaxyx(m_screen, maxy, maxx);
 
-	while(Loop)
-	{
-		werase(window);
+	werase(window);
 
-		box(window, 0, 0);
+	box(window, 0, 0);
 
-		mvwprintw(window, 0, 1, "Version");
-		mvwprintw(window, 1, 1, "%s", Version::GetVersion().c_str());
+	mvwprintw(window, 0, 1, "Version");
+	mvwprintw(window, 1, 1, "%s", Version::GetVersion().c_str());
 
-		wrefresh(window);
+	wrefresh(window);
 
-		if (WaitInput())
-		{
-			int input = getch();
-
-			switch(input)
-			{
-				case ERR:
-					break;
-				default:
-					Loop = false;
-					break;
-			}
-		}
-	}
+	WaitForAnyKey();
 	delwin(window);
 }
 
@@ -224,7 +239,7 @@ void Gui::MainLoop(PCap &Capture, Hosts &HostInfo)
 				//s - Change host sorting type (Host / RX / TX / Total)
 				case 'a': /* About */
 				case 'A':
-					throw;
+					ShowAbout(m_screen);
 					break;
 				case 'c': /* Clear Stats */
 				case 'C':
@@ -374,6 +389,27 @@ retry:
 		return true;
 
 	return false;
+}
+
+void Gui::WaitForAnyKey()
+{
+	bool Loop = true;
+	while(Loop)
+	{
+		if (WaitInput())
+		{
+			int input = getch();
+
+			switch(input)
+			{
+				case ERR:
+					break;
+				default:
+					Loop = false;
+					break;
+			}
+		}
+	}
 }
 
 void Gui::Delay()

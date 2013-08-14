@@ -27,6 +27,7 @@ class Gui
 		Gui();
 		~Gui();
 
+		void ShowAbout(WINDOW *parent);
 		void ShowVersion(WINDOW *parent);
 		void ShowMainHelp(WINDOW *parent);
 
@@ -34,6 +35,7 @@ class Gui
 
 		bool WaitInput();
 		bool WaitInput(struct timeval *tv);
+		void WaitForAnyKey();
 		void Delay();
 		void Delay(struct timespec *ts);
 
