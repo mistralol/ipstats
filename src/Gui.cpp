@@ -66,7 +66,7 @@ void Gui::ShowVersion(WINDOW *parent)
 	int pWidth, pHeight;
 	getmaxyx(m_screen, pHeight, pWidth);
 	int nLines = 3;
-	int nCols = 20;
+	int nCols = 25;
 	int LocX = (pWidth / 2) - (nCols / 2);
 	int LocY = (pHeight / 2) - (nLines / 2);
 	WINDOW *window = newwin(nLines, nCols, LocY, LocX);
@@ -76,7 +76,7 @@ void Gui::ShowVersion(WINDOW *parent)
 	box(window, 0, 0);
 
 	mvwprintw(window, 0, 1, "Version");
-	mvwprintw(window, 1, 1, "%s", Version::GetVersion().c_str());
+	mvwprintw(window, 1, 1, "Version: %s", Version::GetVersion().c_str());
 
 	wrefresh(window);
 
