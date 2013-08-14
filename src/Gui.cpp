@@ -41,8 +41,6 @@ void Gui::ShowAbout(WINDOW *parent)
 	int LocX = (pWidth / 2) - (nCols / 2);
 	int LocY = (pHeight / 2) - (nLines / 2);
 	WINDOW *window = newwin(nLines, nCols, LocY, LocX);
-	//int maxy, maxx;
-	//getmaxyx(m_screen, maxy, maxx);
 
 	werase(window);
 
@@ -72,8 +70,6 @@ void Gui::ShowVersion(WINDOW *parent)
 	int LocX = (pWidth / 2) - (nCols / 2);
 	int LocY = (pHeight / 2) - (nLines / 2);
 	WINDOW *window = newwin(nLines, nCols, LocY, LocX);
-	//int maxy, maxx;
-	//getmaxyx(m_screen, maxy, maxx);
 
 	werase(window);
 
@@ -98,8 +94,6 @@ void Gui::ShowMainHelp(WINDOW *parent)
 	int LocX = (pWidth / 2) - (nCols / 2);
 	int LocY = (pHeight / 2) - (nLines / 2);
 	WINDOW *window = newwin(nLines, nCols, LocY, LocX);
-	//int maxy, maxx;
-	//getmaxyx(m_screen, maxy, maxx);
 
 	while(Loop)
 	{
