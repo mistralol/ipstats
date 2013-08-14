@@ -88,47 +88,32 @@ void Gui::ShowMainHelp(WINDOW *parent)
 {
 	int pWidth, pHeight;
 	getmaxyx(m_screen, pHeight, pWidth);
-	bool Loop = true;
 	int nLines = 20;
 	int nCols = 50;
 	int LocX = (pWidth / 2) - (nCols / 2);
 	int LocY = (pHeight / 2) - (nLines / 2);
 	WINDOW *window = newwin(nLines, nCols, LocY, LocX);
 
-	while(Loop)
-	{
-		werase(window);
+	werase(window);
 
-		box(window, 0, 0);
+	box(window, 0, 0);
 
-		mvwprintw(window, 0, 1, "Help");
+	mvwprintw(window, 0, 1, "Help");
 
-		int cury = 2;
+	int cury = 2;
 
-		mvwprintw(window, cury++, 1, " ?/h - Show Help");
-		mvwprintw(window, cury++, 1, "   a - Show About Information");
-		mvwprintw(window, cury++, 1, "   c - Clear All Stats");
-		mvwprintw(window, cury++, 1, "   d - Clear stats for selected host");
-		mvwprintw(window, cury++, 1, "   r - Reset Stats for selected host");
-		mvwprintw(window, cury++, 1, "   v - Show Version Information");
-		mvwprintw(window, cury++, 1, "   q - Quit");
+	mvwprintw(window, cury++, 1, " ?/h - Show Help");
+	mvwprintw(window, cury++, 1, "   a - Show About Information");
+	mvwprintw(window, cury++, 1, "   c - Clear All Stats");
+	mvwprintw(window, cury++, 1, "   d - Clear stats for selected host");
+	mvwprintw(window, cury++, 1, "   r - Reset Stats for selected host");
+	mvwprintw(window, cury++, 1, "   v - Show Version Information");
+	mvwprintw(window, cury++, 1, "   q - Quit");
 
-		wrefresh(window);
+	wrefresh(window);
 
-		if (WaitInput())
-		{
-			int input = getch();
+	WaitForAnyKey();
 
-			switch(input)
-			{
-				case ERR:
-					break;
-				default:
-					Loop = false;
-					break;
-			}
-		}
-	}
 	delwin(window);
 }
 
