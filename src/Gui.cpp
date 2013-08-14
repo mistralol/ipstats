@@ -141,6 +141,7 @@ void Gui::MainLoop(PCap &Capture, Hosts &HostInfo)
 		box(m_screen, 0, 0);
 
 		int nHosts = HostInfo.GetCount();
+		HostInfo.Sort();
 		mvwprintw(m_screen, 0, 1, "Hosts (%d/%d)", SelectedHost + 1, nHosts);
 		mvwprintw(m_screen, 0, rxcol, "RX Packets ------------ RX Bytes");
 		mvwprintw(m_screen, 0, txcol, "TX Packets ------------ TX Bytes");

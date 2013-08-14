@@ -50,6 +50,73 @@ bool HostsSortByAddress(struct HostStats *a, struct HostStats *b)
 	return a2 > b2;
 }
 
+bool HostsSortByRxPackets(struct HostStats *a, struct HostStats *b)
+{
+	uint64_t RxPackets1 = a->Dest->GetTotalPackets();
+	uint64_t RxPackets2 = b->Dest->GetTotalPackets();
+
+	if (RxPackets1 == RxPackets2)
+		return HostsSortByAddress(a, b);
+
+	return RxPackets1 > RxPackets2;
+}
+
+bool HostsSortByRxBytes(struct HostStats *a, struct HostStats *b)
+{
+	uint64_t RxBytes1 = a->Dest->GetTotalBytes();
+	uint64_t RxBytes2 = b->Dest->GetTotalBytes();
+
+	if (RxBytes1 == RxBytes2)
+		return HostsSortByAddress(a, b);
+
+	return RxBytes1 > RxBytes2;
+}
+
+bool HostsSortByTxPackets(struct HostStats *a, struct HostStats *b)
+{
+	uint64_t RxPackets1 = a->Source->GetTotalPackets();
+	uint64_t RxPackets2 = b->Source->GetTotalPackets();
+
+	if (RxPackets1 == RxPackets2)
+		return HostsSortByAddress(a, b);
+
+	return RxPackets1 > RxPackets2;
+}
+
+bool HostsSortByTxBytes(struct HostStats *a, struct HostStats *b)
+{
+	uint64_t RxBytes1 = a->Source->GetTotalBytes();
+	uint64_t RxBytes2 = b->Source->GetTotalBytes();
+
+	if (RxBytes1 == RxBytes2)
+		return HostsSortByAddress(a, b);
+
+	return RxBytes1 > RxBytes2;
+}
+
+bool HostsSortByTotalPackets(struct HostStats *a, struct HostStats *b)
+{
+	uint64_t Packets1 = a->Source->GetTotalPackets() + a->Dest->GetTotalBytes();
+	uint64_t Packets2 = b->Source->GetTotalPackets() + a->Dest->GetTotalBytes();
+
+	if (Packets1 == Packets2)
+		return HostsSortByAddress(a, b);
+
+	return Packets1 > Packets2;
+}
+
+bool HostsSortByTotalBytes(struct HostStats *a, struct HostStats *b)
+{
+	uint64_t Bytes1 = a->Source->GetTotalBytes() + a->Dest->GetTotalBytes();
+	uint64_t Bytes2 = b->Source->GetTotalBytes() + a->Dest->GetTotalBytes();
+
+	if (Bytes1 == Bytes2)
+		return HostsSortByAddress(a, b);
+
+	return Bytes1 > Bytes2;
+}
+
+
 void Hosts::PCapPacket(const struct pcap_pkthdr *hdr, const u_char *buf)
 {
     /*  struct pcap_pkthdr {
@@ -203,6 +270,7 @@ void Hosts::HostAdd(const std::string Address)
 
 void Hosts::Sort()
 {
+	boost::recursive_mutex::scoped_lock lock(m_mutex);
 	std::sort(m_vhosts.begin(), m_vhosts.end(), HostsSortByAddress);
 }
 
