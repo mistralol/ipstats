@@ -1,15 +1,14 @@
 
+include ../Makefile.Rules
 
 EXE=../ipstats
 
 SRCS= PCap.cpp Exception.cpp TimeUtil.cpp Config.cpp Counter.cpp Hosts.cpp Gui.cpp Version.cpp main.cpp
 
 OBJS=$(SRCS:%.cpp=%.o)
-MKDEP=gcc -E -MM
-OPTS=-Wall -Werror -D_GNU_SOURCE -std=gnu++0x -ggdb
-CPP=g++
-INCLUDE=-I../include/
-LIBS=-lpcap -lboost_thread -lboost_system -lncurses -lpthread
+
+INCLUDE+=-I../include/
+LIBS+=-lpcap -lboost_thread -lboost_system -lncurses -lpthread
 
 all: .depend $(EXE)
 
