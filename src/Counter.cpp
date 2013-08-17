@@ -23,8 +23,6 @@
 
 #include "host-stats.h"
 
-#include <syslog.h>
-
 Counter::Counter()
 {
 	Reset();
@@ -79,8 +77,6 @@ void Counter::GetSpeeds(double *PacketsPerSecond, double *BytesPerSecond)
 		abort();
 
 	double ms = TimeUtil::TvDiffMs(tv, m_LastSpeeds);
-
-	syslog(LOG_INFO, "%f", (float) ms);
 
 	if (ms > 2000)
 	{
