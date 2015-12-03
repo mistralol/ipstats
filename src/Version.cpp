@@ -20,10 +20,10 @@
 
 */
 
-#include "host-stats.h"
+#include <host-stats.h>
 
 std::string Version::GetVersion()
 {
-	return "0.0.1";
+	return PACKAGE_VERSION;
 }
 

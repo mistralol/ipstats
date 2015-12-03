@@ -22,7 +22,7 @@
 
 #include <stdlib.h>
 
-#include "host-stats.h"
+#include <host-stats.h>
 
 
 int main(int argc, char **argv)
