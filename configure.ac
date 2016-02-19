@@ -8,10 +8,12 @@ AM_INIT_AUTOMAKE([foreign])
 
 AC_PROG_CC
 AC_PROG_CXX
+AC_PROG_LIBTOOL
 
 AX_CXX_COMPILE_STDCXX_11(noext, optional)
 
-AC_PROG_LIBTOOL
+AX_COMPILER_FLAGS([WARN_CFLAGS],[WARN_LDFLAGS])
+AC_SUBST([AM_CXXFLAGS], $WARN_CXXFLAGS)
 
 dnl give error and exit if we don't have pkgconfig
 AC_CHECK_PROG(HAVE_PKGCONFIG, pkg-config, [ ], [
@@ -37,8 +39,6 @@ AC_CHECK_LIB([boost_system], [_init], [], [
 AC_CHECK_LIB([pthread], [pthread_mutex_init], [], [
 	AC_MSG_ERROR([You need to have pthread installed])
 ])
-
-AC_SUBST([AM_CFLAGS], ["-Wall -Werror"])
 
 AC_OUTPUT(Makefile src/Makefile)
 

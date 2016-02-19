@@ -39,7 +39,7 @@ static inline std::string ntohstr(u_int32_t addr)
 	return inet_ntoa(in);
 }
 
-bool HostsSortByAddress(struct HostStats *a, struct HostStats *b)
+static bool HostsSortByAddress(struct HostStats *a, struct HostStats *b)
 {
 	in_addr_t a1 = inet_addr(a->Addr->c_str());
 	in_addr_t b1 = inet_addr(b->Addr->c_str());
@@ -49,8 +49,8 @@ bool HostsSortByAddress(struct HostStats *a, struct HostStats *b)
 
 	return a2 > b2;
 }
-
-bool HostsSortByRxPackets(struct HostStats *a, struct HostStats *b)
+#if 0
+static bool HostsSortByRxPackets(struct HostStats *a, struct HostStats *b)
 {
 	uint64_t RxPackets1 = a->Dest->GetTotalPackets();
 	uint64_t RxPackets2 = b->Dest->GetTotalPackets();
@@ -61,7 +61,7 @@ bool HostsSortByRxPackets(struct HostStats *a, struct HostStats *b)
 	return RxPackets1 > RxPackets2;
 }
 
-bool HostsSortByRxBytes(struct HostStats *a, struct HostStats *b)
+static bool HostsSortByRxBytes(struct HostStats *a, struct HostStats *b)
 {
 	uint64_t RxBytes1 = a->Dest->GetTotalBytes();
 	uint64_t RxBytes2 = b->Dest->GetTotalBytes();
@@ -72,7 +72,7 @@ bool HostsSortByRxBytes(struct HostStats *a, struct HostStats *b)
 	return RxBytes1 > RxBytes2;
 }
 
-bool HostsSortByTxPackets(struct HostStats *a, struct HostStats *b)
+static bool HostsSortByTxPackets(struct HostStats *a, struct HostStats *b)
 {
 	uint64_t RxPackets1 = a->Source->GetTotalPackets();
 	uint64_t RxPackets2 = b->Source->GetTotalPackets();
@@ -83,7 +83,7 @@ bool HostsSortByTxPackets(struct HostStats *a, struct HostStats *b)
 	return RxPackets1 > RxPackets2;
 }
 
-bool HostsSortByTxBytes(struct HostStats *a, struct HostStats *b)
+static bool HostsSortByTxBytes(struct HostStats *a, struct HostStats *b)
 {
 	uint64_t RxBytes1 = a->Source->GetTotalBytes();
 	uint64_t RxBytes2 = b->Source->GetTotalBytes();
@@ -94,7 +94,7 @@ bool HostsSortByTxBytes(struct HostStats *a, struct HostStats *b)
 	return RxBytes1 > RxBytes2;
 }
 
-bool HostsSortByTotalPackets(struct HostStats *a, struct HostStats *b)
+static bool HostsSortByTotalPackets(struct HostStats *a, struct HostStats *b)
 {
 	uint64_t Packets1 = a->Source->GetTotalPackets() + a->Dest->GetTotalBytes();
 	uint64_t Packets2 = b->Source->GetTotalPackets() + a->Dest->GetTotalBytes();
@@ -105,7 +105,7 @@ bool HostsSortByTotalPackets(struct HostStats *a, struct HostStats *b)
 	return Packets1 > Packets2;
 }
 
-bool HostsSortByTotalBytes(struct HostStats *a, struct HostStats *b)
+static bool HostsSortByTotalBytes(struct HostStats *a, struct HostStats *b)
 {
 	uint64_t Bytes1 = a->Source->GetTotalBytes() + a->Dest->GetTotalBytes();
 	uint64_t Bytes2 = b->Source->GetTotalBytes() + a->Dest->GetTotalBytes();
@@ -115,6 +115,7 @@ bool HostsSortByTotalBytes(struct HostStats *a, struct HostStats *b)
 
 	return Bytes1 > Bytes2;
 }
+#endif
 
 
 void Hosts::PCapPacket(const struct pcap_pkthdr *hdr, const u_char *buf)

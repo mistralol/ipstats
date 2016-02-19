@@ -30,7 +30,7 @@ bool Config::WriteConfig(std::string &ErrMsg)
 
 bool Config::WriteConfig(const std::string FileName, std::string &ErrMsg)
 {
-	throw;
+	return false;
 }
 
 bool Config::ReadConfig(std::string &ErrMsg)
@@ -40,7 +40,7 @@ bool Config::ReadConfig(std::string &ErrMsg)
 
 bool Config::ReadConfig(const std::string FileName, std::string &ErrMsg)
 {
-	throw;
+	return false;
 }
 
 std::string Config::GetDefaultConfigFile()
