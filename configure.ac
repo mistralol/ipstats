@@ -18,6 +18,26 @@ AC_CHECK_PROG(HAVE_PKGCONFIG, pkg-config, [ ], [
   AC_MSG_ERROR([You need to have pkg-config installed!])
 ])
 
+AC_CHECK_LIB([pcap], [pcap_open_live], [], [
+	AC_MSG_ERROR([You need to have libpcap installed])
+])
+
+AC_CHECK_LIB([ncurses], [initscr], [], [
+	AC_MSG_ERROR([You need to have libncurses installed])
+])
+
+AC_CHECK_LIB([boost_thread], [_init], [], [
+	AC_MSG_ERROR([You need to have boost_thread installed])
+])
+
+AC_CHECK_LIB([boost_system], [_init], [], [
+	AC_MSG_ERROR([You need to have boost_system installed])
+])
+
+AC_CHECK_LIB([pthread], [pthread_mutex_init], [], [
+	AC_MSG_ERROR([You need to have pthread installed])
+])
+
 AC_SUBST([AM_CFLAGS], ["-Wall -Werror"])
 
 AC_OUTPUT(Makefile src/Makefile)
