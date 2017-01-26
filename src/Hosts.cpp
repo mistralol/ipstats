@@ -145,7 +145,7 @@ void Hosts::PCapPacket(const struct pcap_pkthdr *hdr, const u_char *buf)
 				return;
 
 			do {
-				struct iphdr *ip = (struct iphdr *) current;
+				const struct iphdr *ip = (const struct iphdr *) current;
 				caplen -= sizeof(*ip);
 				//unsigned int ip_len = ntohs(ip->tot_len);
 
